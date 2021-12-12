@@ -26,12 +26,11 @@ I_X = filter2(G_X, I, 'same'); % vertical edges
 I_Y = filter2(G_Y, I, 'same'); % horizontal edges
 I_mag = sqrt(I_X.^2 + I_Y.^2); % gradient magnitude
 I_theta = atan2(I_Y,I_X);
-I_theta(isnan(I_theta)) = 0; % necessary????
 
 % make default grid of samples (centered at zero, width 2)
 interval = 2/num_bins:2/num_bins:2;
 interval = interval - (1/num_bins + 1);
-[grid_x,grid_y] = meshgrid(interval, interval);
+[grid_x grid_y] = meshgrid(interval, interval);
 grid_x = reshape(grid_x, [1 num_samples]);
 grid_y = reshape(grid_y, [1 num_samples]);
 
@@ -88,38 +87,17 @@ for i=1:num_pts
         tmp = repmat(tmp, [1 num_samples]);
         curr_descriptor(a,:) = sum(tmp .* weights);
     end    
-    descriptor(i,:) = reshape(curr_descriptor, [1 num_samples * num_angles]);    
-    
-%     % visualization
-%     if sigma_edge >= 3
-%         subplot(1,2,1);
-%         rescale_and_imshow(I(y_lo:y_hi,x_lo:x_hi) .* reshape(sum(weights,2), [y_hi-y_lo+1,x_hi-x_lo+1]));
-%         subplot(1,2,2);
-%         rescale_and_imshow(curr_descriptor);
-%         pause;
-%     end
+    tmp = reshape(curr_descriptor, [1 num_samples * num_angles]);    
+    tmp=normr(tmp);
+    % cap 0.2
+    for j=1:numel(tmp)
+        if(abs(tmp(j))>0.2)
+        tmp(j)=0.2;        
+        end
+    end
+    tmp=normr(tmp);
+    descriptor(i,:) = tmp;
 end
-
-
-%%
-%% normalize the SIFT descriptors more or less as described in Lowe (2004)
-%%
-tmp = sqrt(sum(descriptor.^2, 2));
-normalize_ind = find(tmp > 1);
-
-descriptor_norm = descriptor(normalize_ind,:);
-descriptor_norm = descriptor_norm ./ repmat(tmp(normalize_ind,:), [1 size(descriptor,2)]);
-
-% suppress large gradients
-descriptor_norm(find(descriptor_norm > 0.2)) = 0.2;
-
-% finally, renormalize to unit length
-tmp = sqrt(sum(descriptor_norm.^2, 2));
-descriptor_norm = descriptor_norm ./ repmat(tmp, [1 size(descriptor,2)]);
-
-descriptor(normalize_ind,:) = descriptor_norm;
-
-
 
 
 function [GX,GY]=gen_dgauss(sigma)
