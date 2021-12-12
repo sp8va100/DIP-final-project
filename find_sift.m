@@ -31,7 +31,7 @@ I_theta(isnan(I_theta)) = 0; % necessary????
 % make default grid of samples (centered at zero, width 2)
 interval = 2/num_bins:2/num_bins:2;
 interval = interval - (1/num_bins + 1);
-[grid_x grid_y] = meshgrid(interval, interval);
+[grid_x,grid_y] = meshgrid(interval, interval);
 grid_x = reshape(grid_x, [1 num_samples]);
 grid_y = reshape(grid_y, [1 num_samples]);
 
