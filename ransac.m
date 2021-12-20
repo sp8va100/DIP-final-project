@@ -5,12 +5,12 @@ function [H, max_num_inliers,residual] = ransac(XY_src, XY_des, ransac_iter_time
         ind = randperm(size(XY_src,1));
         ind_select = ind(1:4);
         ind_residual = ind(5:end);
-        tmp_H = my_homography_fit(XY_src(ind_select,:), XY_des(ind_select,:));
-        predict = my_homography_tf(XY_src(ind_residual,:),tmp_H);
+        tmp_H = homography_fit(XY_src(ind_select,:), XY_des(ind_select,:));
+        predict = homography_tf(XY_src(ind_residual,:),tmp_H);
         
-        dists = sum((XY_des(ind_residual,:) - predict).^2,2);
+        dists = sum((XY_des(ind_residual,:) - predict).^2, 2);
         
-        inlier_idx = find(dists < 0.1);
+        inlier_idx = find(dists < 0.3);
         tmp_num_inliers = length(inlier_idx);
         
         if tmp_num_inliers > max_num_inliers

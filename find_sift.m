@@ -12,7 +12,7 @@ angle_step = 2 * pi / num_angles;
 angles = 0:angle_step:2*pi;
 angles(num_angles+1) = []; % bin centers
 
-[hgt wid] = size(I);
+[hgt, wid] = size(I);
 num_pts = size(circles,1);
 
 descriptor = zeros(num_pts, num_samples * num_angles);
@@ -30,7 +30,7 @@ I_theta = atan2(I_Y,I_X);
 % make default grid of samples (centered at zero, width 2)
 interval = 2/num_bins:2/num_bins:2;
 interval = interval - (1/num_bins + 1);
-[grid_x grid_y] = meshgrid(interval, interval);
+[grid_x, grid_y] = meshgrid(interval, interval);
 grid_x = reshape(grid_x, [1 num_samples]);
 grid_y = reshape(grid_y, [1 num_samples]);
 
@@ -92,7 +92,7 @@ for i=1:num_pts
     % cap 0.2
     for j=1:numel(tmp)
         if(abs(tmp(j))>0.2)
-        tmp(j)=0.2;        
+            tmp(j)=0.2;        
         end
     end
     tmp=normr(tmp);
