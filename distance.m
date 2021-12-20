@@ -14,13 +14,13 @@ end
 
 % ||(x - y)||2 = x^2 + y^2 - 2 * x * y
 
-x1_sum = sum(x1 .* 2, 2) * ones(M, 1);
+x1_sum = sum(x1 .* 2, 2) * ones(1, M);
 x2_sum = ones(N, 1) * sum(x2 .* 2, 2)';
 
 dist = x1_sum + x2_sum - 2 .* x1 * x2'; 
 
-if any(any(n2<0))
-  n2(n2<0) = 0;
+if any(any(dist<0))
+  dist(dist<0) = 0;
 end
 
 end
