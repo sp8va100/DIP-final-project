@@ -15,7 +15,7 @@ clear Ix;
 clear Iy;
 
 % apply guassian filter
-h = fspecial('gaussian', [7, 7], sigma);
+h = fspecial('gaussian', max(1,fix(6*sigma)), sigma);
 Ix2 = conv2(Ix2, h, 'same');
 Iy2 = conv2(Iy2, h, 'same');
 Ixy = conv2(Ixy, h, 'same');
