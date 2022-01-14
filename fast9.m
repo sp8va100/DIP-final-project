@@ -61,12 +61,12 @@ end
 
 [y, x] = find(s ~= 0);
 
-figure; imshow(image); hold on;
-
-for i = 1 : length(x)
-    plot(x(i), y(i), 'g+'); hold on;
-end
-hold off;
+% figure; imshow(image); hold on;
+% 
+% for i = 1 : length(x)
+%     plot(x(i), y(i), 'g+'); hold on;
+% end
+% hold off;
 
 end
 
