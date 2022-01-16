@@ -28,7 +28,7 @@ mx = ordfilt2(R,sizeofmask^2,ones(sizeofmask)); % Grey-scale dilate.
 R = (R==mx)&(R>thresh);       % Find maxima.
 
 [corner_r, corner_c] = find(R);
-figure, imagesc(image), axis image, colormap(gray), hold on
-plot(corner_c,corner_r,'ys'), title('corners detected');
+%figure, imagesc(image), axis image, colormap(gray), hold on
+%plot(corner_c,corner_r,'ys'), title('corners detected');
 end
 
