@@ -15,7 +15,7 @@ clear Ix;
 clear Iy;
 
 % apply guassian filter
-h = fspecial('gaussian', [7, 7], sigma);
+h = fspecial('gaussian', max(1,fix(6*sigma)), sigma);
 Ix2 = conv2(Ix2, h, 'same');
 Iy2 = conv2(Iy2, h, 'same');
 Ixy = conv2(Ixy, h, 'same');
@@ -28,7 +28,7 @@ mx = ordfilt2(R,sizeofmask^2,ones(sizeofmask)); % Grey-scale dilate.
 R = (R==mx)&(R>thresh);       % Find maxima.
 
 [corner_r, corner_c] = find(R);
-figure, imagesc(image), axis image, colormap(gray), hold on
-plot(corner_c,corner_r,'ys'), title('corners detected');
+%figure, imagesc(image), axis image, colormap(gray), hold on
+%plot(corner_c,corner_r,'ys'), title('corners detected');
 end
 

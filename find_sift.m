@@ -87,18 +87,24 @@ for i=1:num_pts
         tmp = repmat(tmp, [1 num_samples]);
         curr_descriptor(a,:) = sum(tmp .* weights);
     end    
-    tmp = reshape(curr_descriptor, [1 num_samples * num_angles]);    
-    tmp=normr(tmp);
-    % cap 0.2
-    for j=1:numel(tmp)
-        if(abs(tmp(j))>0.2)
-            tmp(j)=0.2;        
-        end
-    end
-    tmp=normr(tmp);
-    descriptor(i,:) = tmp;
+    descriptor(i, :) = reshape(curr_descriptor, [1 num_samples * num_angles]);    
+  
 end
 
+tmp = sqrt(sum(descriptor.^2, 2));
+normalize_ind = find(tmp > 1);
+
+sift_arr_norm = descriptor(normalize_ind,:);
+sift_arr_norm = sift_arr_norm ./ repmat(tmp(normalize_ind,:), [1 size(descriptor,2)]);
+
+% suppress large gradients
+sift_arr_norm(find(sift_arr_norm > 0.2)) = 0.2;
+
+% finally, renormalize to unit length
+tmp = sqrt(sum(sift_arr_norm.^2, 2));
+sift_arr_norm = sift_arr_norm ./ repmat(tmp, [1 size(descriptor,2)]);
+
+descriptor(normalize_ind,:) = sift_arr_norm;
 
 function [GX,GY]=gen_dgauss(sigma)
 %laplacian of size sigma
